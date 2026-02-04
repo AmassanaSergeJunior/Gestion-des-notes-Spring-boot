@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} ? ${title} + ' - Gestion Notes' : 'Gestion des Notes'">Gestion des Notes</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2D3561;
+            --primary-light: #3d4779;
+            --primary-dark: #1e2342;
+            --accent: #F4845F;
+            --accent-light: #f69b7d;
+            --accent-dark: #e36640;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg: #FAFBFC;
+            --bg-card: #FFFFFF;
+            --text: #1F2937;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 0;
+            box-shadow: 0 4px 20px var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(244, 132, 95, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 0.7rem 1.3rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(244, 132, 95, 0.3);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            flex: 1;
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-bottom: 3rem;
+            animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .page-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow-lg);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(244, 132, 95, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(244, 132, 95, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+    
+    <th:block th:replace="${customStyles}" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo" th:href="@{/}">
+                <div class="logo-icon">📚</div>
+                <span>GestionNotes</span>
+            </a>
+            <ul class="nav-links">
+                <li><a th:href="@{/}" th:classappend="${#httpServletRequest.requestURI == '/' ? 'active' : ''}">Accueil</a></li>
+                <li><a th:href="@{/etudiants}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/etudiants') ? 'active' : ''}">Étudiants</a></li>
+                <li><a th:href="@{/matieres}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/matieres') ? 'active' : ''}">Matières</a></li>
+                <li><a th:href="@{/notes}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/notes') ? 'active' : ''}">Notes</a></li>
+                <li><a th:href="@{/resultats}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/resultats') ? 'active' : ''}">Résultats</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+        <th:block th:replace="${content}" />
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 GestionNotes - Système de Gestion des Notes des Étudiants</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Développé avec Spring Boot & Thymeleaf</p>
+    </footer>
+</body>
+</html>

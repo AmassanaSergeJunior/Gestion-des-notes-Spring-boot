@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvel Étudiant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D3561;
+            --accent: #F4845F;
+            --bg: #FAFBFC;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); }
+        nav { background: linear-gradient(135deg, var(--primary) 0%, #1e2342 100%); padding: 1.2rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 0.8rem; }
+        .logo-icon { width: 42px; height: 42px; background: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 12px rgba(244, 132, 95, 0.3); }
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+        .nav-links a { color: rgba(255, 255, 255, 0.85); text-decoration: none; padding: 0.7rem 1.3rem; border-radius: 10px; font-weight: 500; transition: all 0.3s; }
+        .nav-links a:hover { color: white; background: rgba(255, 255, 255, 0.1); }
+        .nav-links a.active { background: var(--accent); color: white; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 3rem 2rem; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 2rem; }
+        .form-card { background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); max-width: 600px; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary); }
+        .form-group input { width: 100%; padding: 0.9rem 1.2rem; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 1rem; font-family: 'Poppins', sans-serif; }
+        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .form-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 0.9rem 2rem; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; font-family: 'Poppins', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent) 0%, #e36640 100%); color: white; }
+        .btn-secondary { background: white; color: var(--primary); border: 2px solid var(--primary); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a th:href="@{/}" class="logo"><div class="logo-icon">📚</div><span>GestionNotes</span></a>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Accueil</a></li>
+                <li><a th:href="@{/etudiants}" class="active">Étudiants</a></li>
+                <li><a th:href="@{/matieres}">Matières</a></li>
+                <li><a th:href="@{/notes}">Notes</a></li>
+                <li><a th:href="@{/resultats}">Résultats</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="page-title">➕ Nouvel Étudiant</h1>
+        <div class="form-card">
+            <form th:action="@{/etudiants/save}" th:object="${etudiant}" method="post">
+                <div class="form-group">
+                    <label for="matricule">Matricule</label>
+                    <input type="text" id="matricule" th:field="*{matricule}" required placeholder="Ex: E006">
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input type="text" id="nom" th:field="*{nom}" required placeholder="Ex: DUPONT">
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" id="prenom" th:field="*{prenom}" required placeholder="Ex: Jean">
+                </div>
+                <div class="form-group">
+                    <label for="age">Âge</label>
+                    <input type="number" id="age" th:field="*{age}" min="1" required placeholder="Ex: 20">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+                    <a th:href="@{/etudiants}" class="btn btn-secondary">↩️ Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Matières</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo" th:href="@{/}"><div class="logo-icon">📚</div><span>GestionNotes</span></a>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Accueil</a></li>
+                <li><a th:href="@{/etudiants}">Étudiants</a></li>
+                <li><a th:href="@{/matieres}" class="active">Matières</a></li>
+                <li><a th:href="@{/notes}">Notes</a></li>
+                <li><a th:href="@{/resultats}">Résultats</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+        <div class="page-header">
+            <h1 class="page-title">📖 Matières</h1>
+            <a th:href="@{/matieres/nouveau}" class="btn btn-primary">➕ Ajouter une matière</a>
+        </div>
+        <div class="table-container" th:if="${!matieres.isEmpty()}">
+            <table>
+                <thead>
+                    <tr><th>Code</th><th>Nom</th><th>Coefficient</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="m : ${matieres}">
+                        <td th:text="${m.code}"></td>
+                        <td th:text="${m.nom}"></td>
+                        <td th:text="${m.coef}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container" th:if="${matieres.isEmpty()}">
+            <div class="empty-state">
+                <div class="empty-state-icon">📖</div>
+                <div class="empty-state-text">Aucune matière enregistrée</div>
+                <a th:href="@{/matieres/nouveau}" class="btn btn-primary">Ajouter la première matière</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
